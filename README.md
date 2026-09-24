@@ -91,3 +91,7 @@ cargo test       # run the render/countdown/cache unit tests
 make stage       # build and assemble the .sdPlugin directory
 cargo clippy     # lint
 ```
+
+## Credits
+
+This plugin started as a fork/adaptation of [ImDevinC/opendeck-opencode-usage](https://github.com/ImDevinC/opendeck-opencode-usage), which shows [opencode](https://opencode.ai) API usage the same way. All credit for the original SVG ring design, OpenAction wiring, and project structure goes to that repo; this fork swaps the data source over to Claude Code.
