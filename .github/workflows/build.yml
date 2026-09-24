@@ -76,17 +76,17 @@ jobs:
       - name: Rename binary (Windows)
         if: matrix.os == 'windows-latest'
         shell: pwsh
-        run: Move-Item "target\${{ matrix.target }}\release\oaopencode-usage.exe" "oaopencode-usage-${{ matrix.suffix }}"
+        run: Move-Item "target\${{ matrix.target }}\release\oaclaudecode-usage.exe" "oaclaudecode-usage-${{ matrix.suffix }}"
 
       - name: Rename binary (Unix)
         if: matrix.os != 'windows-latest'
-        run: mv "target/${{ matrix.target }}/release/oaopencode-usage" "oaopencode-usage-${{ matrix.suffix }}"
+        run: mv "target/${{ matrix.target }}/release/oaclaudecode-usage" "oaclaudecode-usage-${{ matrix.suffix }}"
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: oaopencode-usage-${{ matrix.suffix }}
-          path: oaopencode-usage-${{ matrix.suffix }}
+          name: oaclaudecode-usage-${{ matrix.suffix }}
+          path: oaclaudecode-usage-${{ matrix.suffix }}
           compression-level: 0
           if-no-files-found: error
 
@@ -107,7 +107,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: bin
-          pattern: oaopencode-usage-*
+          pattern: oaclaudecode-usage-*
           merge-multiple: true
 
       - name: Set version variables
@@ -125,27 +125,27 @@ jobs:
 
       - name: Assemble plugin bundle
         run: |
-          mkdir -p com.imdevinc.opencodeusage.sdPlugin/actions
-          cp assets/manifest.json com.imdevinc.opencodeusage.sdPlugin/manifest.json
-          cp assets/pi.html com.imdevinc.opencodeusage.sdPlugin/pi.html
-          cp assets/icon.svg com.imdevinc.opencodeusage.sdPlugin/icon.svg
-          cp assets/opencode.png com.imdevinc.opencodeusage.sdPlugin/opencode.png
-          cp assets/actions/icon.svg com.imdevinc.opencodeusage.sdPlugin/actions/icon.svg
-          cp bin/oaopencode-usage-* com.imdevinc.opencodeusage.sdPlugin/
+          mkdir -p com.esteban-dcp.claudecodeusage.sdPlugin/actions
+          cp assets/manifest.json com.esteban-dcp.claudecodeusage.sdPlugin/manifest.json
+          cp assets/pi.html com.esteban-dcp.claudecodeusage.sdPlugin/pi.html
+          cp assets/icon.svg com.esteban-dcp.claudecodeusage.sdPlugin/icon.svg
+          cp assets/claude.png com.esteban-dcp.claudecodeusage.sdPlugin/claude.png
+          cp assets/actions/icon.svg com.esteban-dcp.claudecodeusage.sdPlugin/actions/icon.svg
+          cp bin/oaclaudecode-usage-* com.esteban-dcp.claudecodeusage.sdPlugin/
 
       - name: Verify bundle
         run: |
-          test -f com.imdevinc.opencodeusage.sdPlugin/manifest.json
-          test "$(ls -1 com.imdevinc.opencodeusage.sdPlugin/oaopencode-usage-* | wc -l)" = "5"
+          test -f com.esteban-dcp.claudecodeusage.sdPlugin/manifest.json
+          test "$(ls -1 com.esteban-dcp.claudecodeusage.sdPlugin/oaclaudecode-usage-* | wc -l)" = "5"
 
       - name: Create archive
-        run: zip -rq com.imdevinc.opencodeusage.zip com.imdevinc.opencodeusage.sdPlugin
+        run: zip -rq com.esteban-dcp.claudecodeusage.zip com.esteban-dcp.claudecodeusage.sdPlugin
 
       - name: Upload archive
         uses: actions/upload-artifact@v4
         with:
-          name: com.imdevinc.opencodeusage.zip
-          path: com.imdevinc.opencodeusage.zip
+          name: com.esteban-dcp.claudecodeusage.zip
+          path: com.esteban-dcp.claudecodeusage.zip
           if-no-files-found: error
 
       - name: Commit version and update tag
@@ -172,4 +172,4 @@ jobs:
           tag: ${{ steps.version.outputs.tag }}
           body: ${{ needs.bump.outputs.release-notes }}
           token: ${{ github.token }}
-          artifacts: com.imdevinc.opencodeusage.zip
+          artifacts: com.esteban-dcp.claudecodeusage.zip

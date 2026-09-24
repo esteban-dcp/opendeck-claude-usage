@@ -1,6 +1,6 @@
-PLUGIN_DIR := com.imdevinc.opencodeusage.sdPlugin
+PLUGIN_DIR := com.esteban-dcp.claudecodeusage.sdPlugin
 BUNDLE_ID := $(basename $(PLUGIN_DIR))
-PACKAGE := oaopencode-usage
+PACKAGE := oaclaudecode-usage
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
@@ -28,7 +28,7 @@ stage: build
 	cp assets/manifest.json $(PLUGIN_DIR)/manifest.json
 	cp assets/pi.html $(PLUGIN_DIR)/pi.html
 	cp assets/icon.svg $(PLUGIN_DIR)/icon.svg
-	cp assets/opencode.png $(PLUGIN_DIR)/opencode.png
+	cp assets/claude.png $(PLUGIN_DIR)/claude.png
 	cp assets/actions/icon.svg $(PLUGIN_DIR)/actions/icon.svg
 
 package: stage

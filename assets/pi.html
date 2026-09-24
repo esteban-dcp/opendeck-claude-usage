@@ -18,11 +18,9 @@
 
 				const settings = actionInfo.payload.settings || {};
 				const mode = document.getElementById("mode");
-				const apiKey = document.getElementById("apiKey");
 				const showPercent = document.getElementById("showPercent");
 
-				mode.value = settings.mode ?? "rolling";
-				apiKey.value = settings.api_key ?? "";
+				mode.value = settings.mode ?? "session";
 				showPercent.checked = settings.show_percent !== false;
 
 				websocket.onmessage = (event) => {
@@ -30,7 +28,6 @@
 					if (data.event == "didReceiveSettings") {
 						const s = data.payload.settings || {};
 						if (s.mode) mode.value = s.mode;
-						if (s.api_key != null) apiKey.value = s.api_key;
 						if (s.show_percent != null) showPercent.checked = s.show_percent;
 					}
 				};
@@ -43,7 +40,6 @@
 					context: context,
 					payload: {
 						mode: document.getElementById("mode").value,
-						api_key: document.getElementById("apiKey").value,
 						show_percent: document.getElementById("showPercent").checked,
 					},
 				}));
@@ -90,21 +86,19 @@
 		<div>
 			<label for="mode">Mode</label>
 			<select id="mode" onchange="update();">
-				<option value="rolling">Rolling</option>
+				<option value="session">Session (5h)</option>
 				<option value="weekly">Weekly</option>
-				<option value="monthly">Monthly</option>
 			</select>
-		</div>
-		<div>
-			<label for="apiKey">OpenCode API Key</label>
-			<input id="apiKey" oninput="update();" type="password" placeholder="opencode_..." autocomplete="off" />
-			<div class="hint">Get it from the opencode CLI config. Stored in this action's settings.</div>
 		</div>
 		<div>
 			<label for="showPercent">
 				<input id="showPercent" type="checkbox" onchange="update();" style="width:auto; vertical-align:middle;" />
 				Show percentage
 			</label>
+		</div>
+		<div class="hint">
+			Requires a one-time setup: point <code>statusLine.command</code> in <code>~/.claude/settings.json</code> at
+			this plugin's binary with <code>--statusline-bridge</code>. See the plugin's README for details.
 		</div>
 	</body>
 </html>
