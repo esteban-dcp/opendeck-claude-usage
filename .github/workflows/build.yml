@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g. 1.0.0, no leading v). Bypasses the PR-label bump for a one-off manual release."
+        required: true
 
 jobs:
   bump:
@@ -14,15 +19,16 @@ jobs:
       issues: read
       pull-requests: read
     outputs:
-      version: ${{ steps.semver.outputs.version }}
-      release-notes: ${{ steps.semver.outputs.release-notes }}
+      version: ${{ steps.semver.outputs.version || steps.manual.outputs.version }}
+      release-notes: ${{ steps.semver.outputs.release-notes || steps.manual.outputs.release-notes }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Bump version and tag
+      - name: Bump version and tag (PR label driven)
+        if: github.event_name == 'push'
         id: semver
         uses: jefflinse/pr-semver-bump@v1.7.1
         with:
@@ -32,6 +38,13 @@ jobs:
           major-label: major
           patch-label: patch
           with-v: true
+
+      - name: Use manually specified version
+        if: github.event_name == 'workflow_dispatch'
+        id: manual
+        run: |
+          echo "version=v${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          echo "release-notes=Manual release." >> "$GITHUB_OUTPUT"
 
   build:
     name: Build ${{ matrix.target }}

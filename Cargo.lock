@@ -385,7 +385,7 @@ dependencies = [
 
 [[package]]
 name = "oaclaudecode-usage"
-version = "0.0.2"
+version = "1.0.0"
 dependencies = [
  "base64",
  "chrono",
